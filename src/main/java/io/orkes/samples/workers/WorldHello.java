@@ -1,27 +1,28 @@
 package io.orkes.samples.workers;
-
 import com.netflix.conductor.client.worker.Worker;
 import com.netflix.conductor.common.metadata.tasks.Task;
 import com.netflix.conductor.common.metadata.tasks.TaskResult;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
-public class ShippingInfoWorker implements Worker {
-
+public class WorldHello implements Worker {
     @Override
     public String getTaskDefName() {
-        return "shipping_info";
+        return "atwong-world-hello";
     }
 
     @Override
     public TaskResult execute(Task task) {
         TaskResult result = new TaskResult(task);
-        result.addOutputData("shipping_service", task.getInputData().get("service"));
-        result.log("Shipped order reference id : " + UUID.randomUUID());
+
+        String name = (String)task.getInputData().get("name");
+
+        StringBuilder reversed = new StringBuilder(name);
+        
+        //result.addOutputData("hw_response", "Hello World!");
+        result.addOutputData("message", reversed.reverse().toString());
+        result.addOutputData("test", "this works2!");
         result.setStatus(TaskResult.Status.COMPLETED);
         return result;
     }
-
 }
